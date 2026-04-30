@@ -54,6 +54,7 @@ class Auth extends BaseController
     public function logout()
     {
         $username = session()->get('username');
+        $this->logAudit('auth', 'logout', "User {$username} logout");
         session()->destroy();
         return redirect()->to('login')->with('success', 'Anda telah logout.');
     }
@@ -90,21 +91,5 @@ class Auth extends BaseController
         return redirect()->to('login')->with('success', 'Password berhasil diubah. Silakan login kembali.');
     }
 
-    private function logAudit(string $modul, string $aksi, string $deskripsi = ''): void
-    {
-        try {
-            $logModel = new \App\Models\AuditLogModel();
-            $logModel->insert([
-                'user_id'    => $this->currentUserId(),
-                'role'       => session()->get('role'),
-                'modul'      => $modul,
-                'aksi'       => $aksi,
-                'deskripsi'  => $deskripsi,
-                'ip_address' => $this->request->getIPAddress(),
-                'user_agent' => $this->request->getUserAgent()->getAgentString(),
-            ]);
-        } catch (\Exception $e) {
-            // silent fail
-        }
-    }
 }
+

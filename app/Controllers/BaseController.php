@@ -2,10 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Traits\AuditLogger;
 use CodeIgniter\Controller;
 
 class BaseController extends Controller
 {
+    use AuditLogger;
+
     protected $helpers = ['sibaja', 'form', 'session', 'url', 'html'];
 
     protected function isAdmin(): bool

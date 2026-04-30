@@ -28,7 +28,9 @@ class TahunAnggaran extends BaseController
 
     public function store()
     {
-        if ($this->model->insert($this->request->getPost())) {
+        $data = $this->request->getPost();
+        if ($this->model->insert($data)) {
+            $this->logAudit('tahun_anggaran', 'create', "Tahun Anggaran: {$data['tahun']}");
             return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil disimpan.');
         }
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
@@ -45,6 +47,7 @@ class TahunAnggaran extends BaseController
     public function update($id = null)
     {
         if ($this->model->update($id, $this->request->getPost())) {
+            $this->logAudit('tahun_anggaran', 'update', "Tahun Anggaran ID: {$id}");
             return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
@@ -53,6 +56,7 @@ class TahunAnggaran extends BaseController
     public function delete($id = null)
     {
         $this->model->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('tahun_anggaran', 'delete', "Tahun Anggaran ID: {$id}");
         return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil dinonaktifkan.');
     }
 }

@@ -16,6 +16,7 @@ class Profil extends BaseController
                 'kontak' => $this->request->getPost('kontak'),
                 'email'  => $this->request->getPost('email'),
             ]);
+            $this->logAudit('profil', 'update', "Profil SKPD ID: {$this->currentSkpdId()}");
             return redirect()->to('profil')->with('success', 'Profil SKPD berhasil diperbarui.');
         }
 

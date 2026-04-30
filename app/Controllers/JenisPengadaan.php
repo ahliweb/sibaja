@@ -28,7 +28,9 @@ class JenisPengadaan extends BaseController
 
     public function store()
     {
-        if ($this->model->insert($this->request->getPost())) {
+        $data = $this->request->getPost();
+        if ($this->model->insert($data)) {
+            $this->logAudit('jenis_pengadaan', 'create', "Jenis Pengadaan: {$data['nama']}");
             return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil disimpan.');
         }
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
@@ -45,6 +47,7 @@ class JenisPengadaan extends BaseController
     public function update($id = null)
     {
         if ($this->model->update($id, $this->request->getPost())) {
+            $this->logAudit('jenis_pengadaan', 'update', "Jenis Pengadaan ID: {$id}");
             return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
@@ -53,6 +56,7 @@ class JenisPengadaan extends BaseController
     public function delete($id = null)
     {
         $this->model->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('jenis_pengadaan', 'delete', "Jenis Pengadaan ID: {$id}");
         return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil dinonaktifkan.');
     }
 }

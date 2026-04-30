@@ -20,4 +20,16 @@ class SkpdModel extends Model
         'kode_skpd' => 'required|max_length[20]|is_unique[skpd.kode_skpd,id,{id}]',
         'nama_skpd' => 'required|max_length[200]',
     ];
+
+    protected $validationMessages = [
+        'kode_skpd' => [
+            'required'   => 'Kode SKPD wajib diisi.',
+            'max_length' => 'Kode SKPD maksimal 20 karakter.',
+            'is_unique'  => 'Kode SKPD sudah digunakan.',
+        ],
+        'nama_skpd' => [
+            'required'   => 'Nama SKPD wajib diisi.',
+            'max_length' => 'Nama SKPD maksimal 200 karakter.',
+        ],
+    ];
 }

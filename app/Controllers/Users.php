@@ -36,6 +36,7 @@ class Users extends BaseController
         $data = $this->request->getPost();
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         if ($model->insert($data)) {
+            $this->logAudit('user', 'create', "User: {$data['nama']}");
             return redirect()->to('users')->with('success', 'Data user berhasil disimpan.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -62,6 +63,7 @@ class Users extends BaseController
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
         if ($model->update($id, $data)) {
+            $this->logAudit('user', 'update', "User ID: {$id}");
             return redirect()->to('users')->with('success', 'Data user berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -83,6 +85,7 @@ class Users extends BaseController
     {
         $model = new \App\Models\UserModel();
         $model->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('user', 'delete', "User ID: {$id}");
         return redirect()->to('users')->with('success', 'User berhasil dinonaktifkan.');
     }
 }

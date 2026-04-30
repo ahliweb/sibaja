@@ -22,7 +22,9 @@ class Skpd extends BaseController
     public function store()
     {
         $model = new \App\Models\SkpdModel();
-        if ($model->insert($this->request->getPost())) {
+        $data = $this->request->getPost();
+        if ($model->insert($data)) {
+            $this->logAudit('skpd', 'create', "SKPD: {$data['nama_skpd']}");
             return redirect()->to('skpd')->with('success', 'Data SKPD berhasil disimpan.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -39,6 +41,7 @@ class Skpd extends BaseController
     {
         $model = new \App\Models\SkpdModel();
         if ($model->update($id, $this->request->getPost())) {
+            $this->logAudit('skpd', 'update', "SKPD ID: {$id}");
             return redirect()->to('skpd')->with('success', 'Data SKPD berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -54,6 +57,7 @@ class Skpd extends BaseController
     {
         $model = new \App\Models\SkpdModel();
         $model->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('skpd', 'delete', "SKPD ID: {$id}");
         return redirect()->to('skpd')->with('success', 'Data SKPD berhasil dinonaktifkan.');
     }
 }

@@ -30,6 +30,7 @@ class Petugas extends BaseController
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
         if ($model->insert($data)) {
+            $this->logAudit('petugas', 'create', "Petugas: {$data['nama']}");
             return redirect()->to('petugas')->with('success', 'Data petugas berhasil disimpan.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -54,6 +55,7 @@ class Petugas extends BaseController
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
         if ($model->update($id, $data)) {
+            $this->logAudit('petugas', 'update', "Petugas ID: {$id}");
             return redirect()->to('petugas')->with('success', 'Data petugas berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $model->errors());
@@ -62,6 +64,7 @@ class Petugas extends BaseController
     public function delete($id = null)
     {
         (new UserModel())->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('petugas', 'delete', "Petugas ID: {$id}");
         return redirect()->to('petugas')->with('success', 'Petugas berhasil dinonaktifkan.');
     }
 }

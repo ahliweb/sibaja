@@ -9,7 +9,7 @@ class Audit extends BaseController
     public function index()
     {
         $model = new AuditLogModel();
-        $logs = $model->orderBy('created_at', 'DESC')->limit(500)->findAll();
+        $logs = $model->getWithUser(500);
         return $this->render('audit/index', [
             'title' => 'Audit Log',
             'logs'  => $logs,

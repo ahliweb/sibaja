@@ -9,7 +9,7 @@
         <?php $no = 1; foreach ($logs as $l): ?>
         <tr>
           <td><?= $no++ ?></td><td><?= date('d/m/Y H:i', strtotime($l['created_at'])) ?></td>
-          <td><?= esc($l['user_id']) ?></td><td><?= esc($l['role'] ?? '-') ?></td>
+          <td><?= esc($l['nama_user'] ?? $l['user_id']) ?></td><td><?= esc($l['role'] ?? '-') ?></td>
           <td><?= esc($l['modul']) ?></td>
           <td><span class="badge text-bg-<?= $l['aksi'] === 'login' ? 'info' : ($l['aksi'] === 'logout' ? 'secondary' : ($l['aksi'] === 'create' ? 'success' : ($l['aksi'] === 'delete' ? 'danger' : 'warning'))) ?>"><?= esc($l['aksi']) ?></span></td>
           <td><?= esc(mb_strimwidth($l['deskripsi'] ?? '', 0, 80, '...')) ?></td>

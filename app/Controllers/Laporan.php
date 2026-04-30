@@ -43,14 +43,80 @@ class Laporan extends BaseController
         ]);
     }
 
+    private function getFilteredData(): array
+    {
+        $model = new PengajuanModel();
+        $filterStatus = $this->request->getGet('status');
+        $filterSkpd = $this->request->getGet('skpd_id');
+        $filterTahun = $this->request->getGet('tahun_id');
+
+        if ($filterStatus) $model->where('status', $filterStatus);
+        if ($filterSkpd) $model->where('skpd_id', $filterSkpd);
+        if ($filterTahun) $model->where('tahun_anggaran_id', $filterTahun);
+
+        return $model->orderBy('created_at', 'DESC')->findAll();
+    }
+
     public function pdf()
     {
-        return redirect()->back()->with('info', 'Export PDF akan diimplementasikan dengan library Dompdf.');
+        $pengajuan = $this->getFilteredData();
+        $this->logAudit('laporan', 'export_pdf', 'Laporan: export PDF');
+
+        $html = '<h2 style="text-align:center">Laporan Pengajuan Barang/Jasa</h2>';
+        $html .= '<p style="text-align:center">SIBAJA — Sekretariat Daerah Kabupaten Kotawaringin Barat</p>';
+        $html .= '<table border="1" cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:11px">';
+        $html .= '<tr style="background:#eee"><th>No</th><th>Nomor</th><th>Tanggal</th><th>Nama Paket</th><th>Pagu</th><th>Status</th></tr>';
+
+        $totalPagu = 0;
+        foreach ($pengajuan as $i => $p) {
+            $no = $i + 1;
+            $totalPagu += $p['pagu_anggaran'] ?? 0;
+            $html .= "<tr><td>{$no}</td><td>{$p['nomor_pengajuan']}</td><td>" . date('d/m/Y', strtotime($p['tanggal'])) . "</td><td>{$p['nama_paket']}</td><td>" . formatRupiah($p['pagu_anggaran'] ?? 0) . "</td><td>" . statusLabel($p['status']) . "</td></tr>";
+        }
+        $html .= '<tr style="background:#eee"><td colspan="4" align="right"><strong>Total Pagu:</strong></td><td colspan="2"><strong>' . formatRupiah($totalPagu) . '</strong></td></tr>';
+        $html .= '</table>';
+
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $dompdf->stream('laporan-pengajuan.pdf', ['Attachment' => 0]);
+        exit;
     }
 
     public function excel()
     {
-        return redirect()->back()->with('info', 'Export Excel akan diimplementasikan dengan library PhpSpreadsheet.');
+        $pengajuan = $this->getFilteredData();
+        $this->logAudit('laporan', 'export_excel', 'Laporan: export Excel');
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Laporan Pengajuan');
+
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nomor Pengajuan');
+        $sheet->setCellValue('C1', 'Tanggal');
+        $sheet->setCellValue('D1', 'Nama Paket');
+        $sheet->setCellValue('E1', 'Pagu Anggaran');
+        $sheet->setCellValue('F1', 'Status');
+
+        $row = 2;
+        foreach ($pengajuan as $i => $p) {
+            $sheet->setCellValue("A{$row}", $i + 1);
+            $sheet->setCellValue("B{$row}", $p['nomor_pengajuan']);
+            $sheet->setCellValue("C{$row}", date('d/m/Y', strtotime($p['tanggal'])));
+            $sheet->setCellValue("D{$row}", $p['nama_paket']);
+            $sheet->setCellValue("E{$row}", $p['pagu_anggaran'] ?? 0);
+            $sheet->setCellValue("F{$row}", statusLabel($p['status']));
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="laporan-pengajuan.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit;
     }
 
     public function printView()

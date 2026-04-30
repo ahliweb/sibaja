@@ -60,6 +60,7 @@ class Dokumen extends BaseController
             'uploaded_at'       => date('Y-m-d H:i:s'),
         ]);
 
+        $this->logAudit('dokumen', 'create', "Dokumen untuk Pengajuan ID: {$pengajuanId}");
         return redirect()->back()->with('success', 'Dokumen berhasil diupload.');
     }
 
@@ -86,13 +87,14 @@ class Dokumen extends BaseController
         if (file_exists($path)) unlink($path);
 
         $this->model->delete($id);
+        $this->logAudit('dokumen', 'delete', "Dokumen ID: {$id}");
         return redirect()->back()->with('success', 'Dokumen berhasil dihapus.');
     }
 
     // === Verifikasi (Admin/Petugas) ===
     public function verifyIndex()
     {
-        $dokumen = $this->model->orderBy('uploaded_at', 'DESC')->findAll();
+        $dokumen = $this->model->getWithPengajuan();
         return $this->render('dokumen/verify', [
             'title'   => 'Verifikasi Dokumen',
             'dokumen' => $dokumen,
@@ -106,6 +108,7 @@ class Dokumen extends BaseController
             'catatan'           => $this->request->getPost('catatan'),
         ];
         $this->model->update($id, $data);
+        $this->logAudit('dokumen', 'update', "Dokumen ID: {$id}");
         return redirect()->back()->with('success', 'Verifikasi dokumen berhasil disimpan.');
     }
 }

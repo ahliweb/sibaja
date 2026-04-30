@@ -23,6 +23,7 @@ class Settings extends BaseController
                     $model->insert(['key' => $key, 'value' => $value]);
                 }
             }
+            $this->logAudit('settings', 'update', 'Settings updated');
             return redirect()->to('settings')->with('success', 'Pengaturan berhasil disimpan.');
         }
 

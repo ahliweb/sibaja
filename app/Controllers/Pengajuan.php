@@ -100,6 +100,7 @@ class Pengajuan extends BaseController
                 'status_sebelum' => null, 'status_baru' => $data['status'],
                 'catatan' => 'Pengajuan dibuat',
             ]);
+            $this->logAudit('pengajuan', 'create', "Pengajuan: {$data['nomor_pengajuan']}");
             $msg = $data['status'] === 'draft' ? 'Pengajuan disimpan sebagai draft.' : 'Pengajuan berhasil dikirim.';
             return redirect()->to("pengajuan/{$id}")->with('success', $msg);
         }
@@ -145,6 +146,7 @@ class Pengajuan extends BaseController
         }
 
         $this->model->update($id, ['status' => 'diajukan']);
+        $this->logAudit('pengajuan', 'update', "Pengajuan ID: {$id}");
         (new RiwayatProsesModel())->insert([
             'pengajuan_id' => $id, 'user_id' => $this->currentUserId(),
             'status_sebelum' => 'draft', 'status_baru' => 'diajukan',
@@ -188,6 +190,7 @@ class Pengajuan extends BaseController
         $catatan = $this->request->getPost('catatan');
 
         $this->model->update($id, ['status' => $statusBaru]);
+        $this->logAudit('pengajuan', 'update', "Pengajuan ID: {$id}");
         (new RiwayatProsesModel())->insert([
             'pengajuan_id' => $id, 'user_id' => $this->currentUserId(),
             'status_sebelum' => $pengajuan['status'], 'status_baru' => $statusBaru,
