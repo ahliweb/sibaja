@@ -68,4 +68,15 @@ class PengajuanModel extends Model
 
         return $this->findAll();
     }
+
+    public function findWithRelations($id)
+    {
+        return $this->select('pengajuan.*, skpd.nama_skpd, jenis_pengadaan.nama as jenis_nama, metode_pengadaan.nama as metode_nama, tahun_anggaran.tahun')
+                    ->join('skpd', 'skpd.id = pengajuan.skpd_id', 'left')
+                    ->join('jenis_pengadaan', 'jenis_pengadaan.id = pengajuan.jenis_id', 'left')
+                    ->join('metode_pengadaan', 'metode_pengadaan.id = pengajuan.metode_id', 'left')
+                    ->join('tahun_anggaran', 'tahun_anggaran.id = pengajuan.tahun_anggaran_id', 'left')
+                    ->where('pengajuan.id', $id)
+                    ->first();
+    }
 }

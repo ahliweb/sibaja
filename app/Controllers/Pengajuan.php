@@ -159,7 +159,7 @@ class Pengajuan extends BaseController
     // === Detail ===
     public function show($id = null)
     {
-        $pengajuan = $this->model->find($id);
+        $pengajuan = $this->model->findWithRelations($id);
         if (! $pengajuan) return redirect()->back()->with('error', 'Pengajuan tidak ditemukan.');
 
         $skpd = (new SkpdModel())->find($pengajuan['skpd_id']);

@@ -21,6 +21,11 @@ class Users extends BaseController
         return $this->render('users/index', ['title' => 'Data User', 'users' => $users]);
     }
 
+    public function new()
+    {
+        return $this->create();
+    }
+
     public function create()
     {
         $skpdModel = new \App\Models\SkpdModel();

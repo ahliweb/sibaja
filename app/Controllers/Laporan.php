@@ -121,7 +121,17 @@ class Laporan extends BaseController
 
     public function printView()
     {
-        // For print-friendly view
-        return $this->index();
+        $pengajuan = $this->getFilteredData();
+        $totalPagu = array_sum(array_column($pengajuan, 'pagu_anggaran'));
+        $countSelesai = count(array_filter($pengajuan, fn($p) => $p['status'] === 'selesai'));
+        $countProses = count(array_filter($pengajuan, fn($p) => in_array($p['status'], ['diverifikasi', 'dalam_proses'])));
+
+        return view('laporan/print', [
+            'title'         => 'Cetak Laporan',
+            'pengajuan'     => $pengajuan,
+            'totalPagu'     => $totalPagu,
+            'countSelesai'  => $countSelesai,
+            'countProses'   => $countProses,
+        ]);
     }
 }

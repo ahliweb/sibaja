@@ -14,6 +14,11 @@ class Skpd extends BaseController
         return $this->render('skpd/index', $data);
     }
 
+    public function new()
+    {
+        return $this->create();
+    }
+
     public function create()
     {
         return $this->render('skpd/create', ['title' => 'Tambah SKPD', 'isEdit' => false]);

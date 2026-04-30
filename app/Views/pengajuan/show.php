@@ -22,8 +22,8 @@
       <div class="card-body">
         <table class="table table-sm">
           <tr><th width="180">Tanggal</th><td><?= date('d/m/Y', strtotime($pengajuan['tanggal'] ?? '')) ?></td></tr>
-          <tr><th>Jenis Pengadaan</th><td><?= esc($pengajuan['jenis_id']) ?></td></tr>
-          <tr><th>Metode Pengadaan</th><td><?= esc($pengajuan['metode_id']) ?></td></tr>
+          <tr><th>Jenis Pengadaan</th><td><?= esc($pengajuan['jenis_nama'] ?? $pengajuan['jenis_id'] ?? '-') ?></td></tr>
+          <tr><th>Metode Pengadaan</th><td><?= esc($pengajuan['metode_nama'] ?? $pengajuan['metode_id'] ?? '-') ?></td></tr>
           <tr><th>Pagu Anggaran</th><td><strong><?= formatRupiah($pengajuan['pagu_anggaran'] ?? 0) ?></strong></td></tr>
           <tr><th>Sumber Dana</th><td><?= esc($pengajuan['sumber_dana'] ?? '-') ?></td></tr>
           <tr><th>Lokasi</th><td><?= esc($pengajuan['lokasi'] ?? '-') ?></td></tr>
