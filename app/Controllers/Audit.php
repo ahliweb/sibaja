@@ -20,6 +20,7 @@ class Audit extends BaseController
     {
         $model = new AuditLogModel();
         $log = $model->find($id);
+        if (! $log) return redirect()->to('audit')->with('error', 'Data tidak ditemukan.');
         return $this->render('audit/show', [
             'title' => 'Detail Audit Log',
             'log'   => $log,
