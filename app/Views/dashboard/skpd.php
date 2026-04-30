@@ -55,7 +55,7 @@
           <td>
             <a href="<?= base_url("pengajuan/{$p['id']}") ?>" class="btn btn-sm btn-info" title="Detail"><i class="fas fa-eye"></i></a>
             <?php if (in_array($p['status'], ['draft', 'perlu_perbaikan'])): ?>
-            <a href="<?= base_url("pengajuan/edit/{$p['id']}") ?>" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
+            <a href="<?= base_url("pengajuan/{$p['id']}/edit") ?>" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
             <?php endif; ?>
           </td>
         </tr>

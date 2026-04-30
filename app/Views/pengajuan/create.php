@@ -31,7 +31,7 @@
         <option value="">Pilih Metode</option>
         <?php foreach ($metodeList as $m): ?><option value="<?= $m['id'] ?>" <?= old('metode_id', $data['metode_id'] ?? '') == $m['id'] ? 'selected' : '' ?>><?= esc($m['nama']) ?></option><?php endforeach; ?>
       </select></div></div>
-      <div class="mb-3 row"><label class="col-sm-3 col-form-label">Pagu Anggaran <span class="text-danger">*</span></label><div class="col-sm-9"><input type="text" name="pagu_anggaran" id="pagu_anggaran" class="form-control" value="<?= old('pagu_anggaran', $data['pagu_anggaran'] ?? '') ?>" required></div></div>
+      <div class="mb-3 row"><label class="col-sm-3 col-form-label">Pagu Anggaran <span class="text-danger">*</span></label><div class="col-sm-9"><input type="text" name="pagu_anggaran" id="pagu_anggaran" class="form-control" value="<?= old('pagu_anggaran', isset($data['pagu_anggaran']) ? (int) $data['pagu_anggaran'] : '') ?>" required></div></div>
       <div class="mb-3 row"><label class="col-sm-3 col-form-label">Sumber Dana <span class="text-danger">*</span></label><div class="col-sm-9"><input type="text" name="sumber_dana" class="form-control" value="<?= old('sumber_dana', $data['sumber_dana'] ?? '') ?>" required></div></div>
       <div class="mb-3 row"><label class="col-sm-3 col-form-label">Lokasi</label><div class="col-sm-9"><input type="text" name="lokasi" class="form-control" value="<?= old('lokasi', $data['lokasi'] ?? '') ?>"></div></div>
 
