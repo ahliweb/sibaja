@@ -5,8 +5,8 @@
   <div class="card-header"><h3 class="card-title">Detail SKPD</h3></div>
   <div class="card-body">
     <table class="table table-bordered">
-      <tr><th width="200">Kode SKPD</th><td><?= esc($data['kode_skpd']) ?></td></tr>
-      <tr><th>Nama SKPD</th><td><?= esc($data['nama_skpd']) ?></td></tr>
+      <tr><th width="200">Kode SKPD</th><td><?= esc($data['kode_skpd'] ?? '-') ?></td></tr>
+      <tr><th>Nama SKPD</th><td><?= esc($data['nama_skpd'] ?? '-') ?></td></tr>
       <tr><th>Kepala SKPD</th><td><?= esc($data['kepala_skpd'] ?? '-') ?></td></tr>
       <tr><th>NIP Kepala</th><td><?= esc($data['nip_kepala'] ?? '-') ?></td></tr>
       <tr><th>Alamat</th><td><?= esc($data['alamat'] ?? '-') ?></td></tr>

@@ -38,9 +38,11 @@ class JenisPengadaan extends BaseController
 
     public function edit($id = null)
     {
+        $data = $this->model->find($id);
+        if (! $data) return redirect()->to('jenis-pengadaan')->with('error', 'Data tidak ditemukan.');
         return $this->render('jenis_pengadaan/edit', [
             'title' => 'Edit Jenis Pengadaan', 'isEdit' => true,
-            'data' => $this->model->find($id),
+            'data' => $data,
         ]);
     }
 

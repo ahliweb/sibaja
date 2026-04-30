@@ -33,8 +33,9 @@ class Skpd extends BaseController
     public function edit($id = null)
     {
         $model = new \App\Models\SkpdModel();
-        $data = ['title' => 'Edit SKPD', 'isEdit' => true, 'data' => $model->find($id)];
-        return $this->render('skpd/edit', $data);
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('skpd')->with('error', 'Data tidak ditemukan.');
+        return $this->render('skpd/edit', ['title' => 'Edit SKPD', 'isEdit' => true, 'data' => $data]);
     }
 
     public function update($id = null)
@@ -50,7 +51,9 @@ class Skpd extends BaseController
     public function show($id = null)
     {
         $model = new \App\Models\SkpdModel();
-        return $this->render('skpd/show', ['title' => 'Detail SKPD', 'data' => $model->find($id)]);
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('skpd')->with('error', 'Data tidak ditemukan.');
+        return $this->render('skpd/show', ['title' => 'Detail SKPD', 'data' => $data]);
     }
 
     public function delete($id = null)

@@ -38,9 +38,11 @@ class TahunAnggaran extends BaseController
 
     public function edit($id = null)
     {
+        $data = $this->model->find($id);
+        if (! $data) return redirect()->to('tahun-anggaran')->with('error', 'Data tidak ditemukan.');
         return $this->render('tahun_anggaran/edit', [
             'title' => 'Edit Tahun Anggaran', 'isEdit' => true,
-            'data' => $this->model->find($id),
+            'data' => $data,
         ]);
     }
 

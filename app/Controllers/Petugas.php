@@ -39,9 +39,11 @@ class Petugas extends BaseController
     public function edit($id = null)
     {
         $model = new UserModel();
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('petugas')->with('error', 'Data tidak ditemukan.');
         return $this->render('petugas/edit', [
             'title' => 'Edit Petugas', 'isEdit' => true,
-            'data' => $model->find($id),
+            'data' => $data,
         ]);
     }
 

@@ -78,7 +78,9 @@ class Dokumen extends BaseController
     public function delete($id = null)
     {
         $dokumen = $this->model->find($id);
+        if (! $dokumen) return redirect()->back()->with('error', 'Dokumen tidak ditemukan.');
         $pengajuan = (new PengajuanModel())->find($dokumen['pengajuan_id']);
+        if (! $pengajuan) return redirect()->back()->with('error', 'Pengajuan tidak ditemukan.');
         if (! in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])) {
             return redirect()->back()->with('error', 'Dokumen tidak dapat dihapus karena pengajuan sudah diproses.');
         }
@@ -103,6 +105,8 @@ class Dokumen extends BaseController
 
     public function doVerify($id = null)
     {
+        $dokumen = $this->model->find($id);
+        if (! $dokumen) return redirect()->back()->with('error', 'Dokumen tidak ditemukan.');
         $data = [
             'status_verifikasi' => $this->request->getPost('status_verifikasi'),
             'catatan'           => $this->request->getPost('catatan'),

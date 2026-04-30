@@ -178,6 +178,7 @@ class Pengajuan extends BaseController
     public function statusForm($id = null)
     {
         $pengajuan = $this->model->find($id);
+        if (! $pengajuan) return redirect()->to('pengajuan')->with('error', 'Pengajuan tidak ditemukan.');
         return $this->render('pengajuan/status_form', [
             'title' => 'Ubah Status', 'pengajuan' => $pengajuan,
         ]);
@@ -186,6 +187,7 @@ class Pengajuan extends BaseController
     public function updateStatus($id = null)
     {
         $pengajuan = $this->model->find($id);
+        if (! $pengajuan) return redirect()->to('pengajuan')->with('error', 'Pengajuan tidak ditemukan.');
         $statusBaru = $this->request->getPost('status_baru');
         $catatan = $this->request->getPost('catatan');
 

@@ -76,7 +76,7 @@ class Dashboard extends BaseController
         $skpdModel = new \App\Models\SkpdModel();
         $skpdId = $this->currentSkpdId();
 
-        $skpd = $skpdModel->find($skpdId);
+        $skpd = $skpdId ? $skpdModel->find($skpdId) : null;
 
         $data = [
             'title'              => 'Dashboard SKPD',

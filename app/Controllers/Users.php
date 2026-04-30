@@ -46,9 +46,11 @@ class Users extends BaseController
     {
         $model = new \App\Models\UserModel();
         $skpdModel = new \App\Models\SkpdModel();
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('users')->with('error', 'Data tidak ditemukan.');
         return $this->render('users/edit', [
             'title' => 'Edit User', 'isEdit' => true,
-            'data' => $model->find($id),
+            'data' => $data,
             'skpdList' => $skpdModel->where('status', 'aktif')->findAll(),
         ]);
     }
@@ -74,7 +76,8 @@ class Users extends BaseController
         $model = new \App\Models\UserModel();
         $skpdModel = new \App\Models\SkpdModel();
         $user = $model->find($id);
-        if ($user && $user['skpd_id']) {
+        if (! $user) return redirect()->to('users')->with('error', 'Data tidak ditemukan.');
+        if ($user['skpd_id']) {
             $s = $skpdModel->find($user['skpd_id']);
             $user['nama_skpd'] = $s['nama_skpd'] ?? '-';
         }

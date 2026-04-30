@@ -78,6 +78,7 @@ class Auth extends BaseController
 
         $userModel = new \App\Models\UserModel();
         $user = $userModel->find($this->currentUserId());
+        if (! $user) return redirect()->back()->with('error', 'User tidak ditemukan.');
 
         if (! password_verify($this->request->getPost('password_lama'), $user['password'])) {
             return redirect()->back()->with('error', 'Password lama tidak sesuai.');

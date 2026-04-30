@@ -4,8 +4,8 @@
 <div class="card"><div class="card-header"><h3 class="card-title">Detail User</h3></div>
 <div class="card-body">
 <table class="table table-bordered">
-<tr><th width="200">Nama</th><td><?= esc($data['nama']) ?></td></tr>
-<tr><th>Username</th><td><?= esc($data['username']) ?></td></tr>
+<tr><th width="200">Nama</th><td><?= esc($data['nama'] ?? '-') ?></td></tr>
+<tr><th>Username</th><td><?= esc($data['username'] ?? '-') ?></td></tr>
 <tr><th>Email</th><td><?= esc($data['email'] ?? '-') ?></td></tr>
 <tr><th>Role</th><td><span class="badge text-bg-<?= $data['role'] === 'admin' ? 'danger' : ($data['role'] === 'petugas' ? 'warning' : 'info') ?>"><?= ucfirst($data['role']) ?></span></td></tr>
 <tr><th>SKPD</th><td><?= esc($data['nama_skpd'] ?? '-') ?></td></tr>

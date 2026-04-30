@@ -38,9 +38,11 @@ class MetodePengadaan extends BaseController
 
     public function edit($id = null)
     {
+        $data = $this->model->find($id);
+        if (! $data) return redirect()->to('metode-pengadaan')->with('error', 'Data tidak ditemukan.');
         return $this->render('metode_pengadaan/edit', [
             'title' => 'Edit Metode Pengadaan', 'isEdit' => true,
-            'data' => $this->model->find($id),
+            'data' => $data,
         ]);
     }
 
