@@ -14,7 +14,7 @@
           <td><span class="badge text-bg-<?= $row['status'] === 'aktif' ? 'success' : 'secondary' ?>"><?= ucfirst($row['status']) ?></span></td>
           <td>
             <a href="<?= base_url("petugas/edit/{$row['id']}") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("petugas/delete/{$row['id']}") ?>" data-nama="<?= esc($row['nama']) ?>"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("petugas/{$row['id']}") ?>" data-nama="<?= esc($row['nama']) ?>"><i class="fas fa-trash"></i></button>
           </td>
         </tr>
         <?php endforeach; ?>

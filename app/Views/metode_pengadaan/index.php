@@ -12,7 +12,7 @@
         <tr><td><?= $no++ ?></td><td><?= esc($row['nama']) ?></td><td><?= esc($row['deskripsi'] ?? '-') ?></td>
           <td><span class="badge text-bg-<?= $row['status'] === 'aktif' ? 'success' : 'secondary' ?>"><?= ucfirst($row['status']) ?></span></td>
           <td><a href="<?= base_url("metode-pengadaan/edit/{$row['id']}") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("metode-pengadaan/delete/{$row['id']}") ?>" data-nama="<?= esc($row['nama']) ?>"><i class="fas fa-trash"></i></button></td>
+            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("metode-pengadaan/{$row['id']}") ?>" data-nama="<?= esc($row['nama']) ?>"><i class="fas fa-trash"></i></button></td>
         </tr>
         <?php endforeach; ?>
       </tbody>

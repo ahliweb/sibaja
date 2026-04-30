@@ -13,7 +13,7 @@ class DokumenModel extends Model
     protected $useSoftDeletes = false;
     protected $allowedFields = [
         'pengajuan_id', 'user_id', 'jenis_dokumen', 'nama_file',
-        'nama_asli', 'ukuran', 'status_verifikasi', 'catatan',
+        'nama_asli', 'ukuran', 'status_verifikasi', 'catatan', 'uploaded_at',
     ];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

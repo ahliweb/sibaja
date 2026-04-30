@@ -14,6 +14,7 @@
         </button>
         <form id="formDelete" method="post" style="display:inline">
           <?= csrf_field() ?>
+          <input type="hidden" name="_method" value="DELETE">
           <button type="submit" class="btn btn-danger">
             <i class="fas fa-trash"></i> Hapus
           </button>
