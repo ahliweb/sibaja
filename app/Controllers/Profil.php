@@ -11,7 +11,7 @@ class Profil extends BaseController
         $skpdModel = new SkpdModel();
         $skpd = $skpdModel->find($this->currentSkpdId());
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $skpdModel->update($this->currentSkpdId(), [
                 'kontak' => $this->request->getPost('kontak'),
                 'email'  => $this->request->getPost('email'),

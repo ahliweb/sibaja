@@ -23,7 +23,7 @@ class MetodePengadaan extends BaseController
 
     public function create()
     {
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $data = $this->request->getPost();
             if ($this->model->insert($data)) {
                 $this->logAudit('metode_pengadaan', 'create', "Metode Pengadaan: {$data['nama']}");

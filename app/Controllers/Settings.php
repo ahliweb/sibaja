@@ -14,7 +14,7 @@ class Settings extends BaseController
             $settings[$s['key']] = $s['value'];
         }
 
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             foreach ($this->request->getPost() as $key => $value) {
                 $existing = $model->where('key', $key)->first();
                 if ($existing) {

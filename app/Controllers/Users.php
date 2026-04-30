@@ -28,7 +28,7 @@ class Users extends BaseController
 
     public function create()
     {
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $model = new \App\Models\UserModel();
             $data = $this->request->getPost();
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);

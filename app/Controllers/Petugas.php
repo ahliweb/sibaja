@@ -19,7 +19,7 @@ class Petugas extends BaseController
 
     public function create()
     {
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $model = new UserModel();
             $data = $this->request->getPost();
             $data['role'] = 'petugas';

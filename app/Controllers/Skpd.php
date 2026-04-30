@@ -21,7 +21,7 @@ class Skpd extends BaseController
 
     public function create()
     {
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $model = new \App\Models\SkpdModel();
             $data = $this->request->getPost();
             if ($model->insert($data)) {

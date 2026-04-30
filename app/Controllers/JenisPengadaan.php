@@ -23,7 +23,7 @@ class JenisPengadaan extends BaseController
 
     public function create()
     {
-        if ($this->request->getMethod() === 'post') {
+        if ($this->request->getMethod() === 'POST') {
             $data = $this->request->getPost();
             if ($this->model->insert($data)) {
                 $this->logAudit('jenis_pengadaan', 'create', "Jenis Pengadaan: {$data['nama']}");
