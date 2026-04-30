@@ -26,6 +26,14 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 
     // Admin only
     $routes->group('', ['filter' => 'auth:admin'], static function ($routes) {
+        // Explicit GET /create routes to avoid catch-all collision
+        $routes->get('skpd/create', 'Skpd::new');
+        $routes->get('users/create', 'Users::new');
+        $routes->get('petugas/create', 'Petugas::new');
+        $routes->get('jenis-pengadaan/create', 'JenisPengadaan::new');
+        $routes->get('metode-pengadaan/create', 'MetodePengadaan::new');
+        $routes->get('tahun-anggaran/create', 'TahunAnggaran::new');
+
         $routes->presenter('skpd', ['controller' => 'Skpd']);
         $routes->presenter('users', ['controller' => 'Users']);
         $routes->presenter('petugas', ['controller' => 'Petugas']);
