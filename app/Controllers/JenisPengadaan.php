@@ -25,7 +25,7 @@ class JenisPengadaan extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $data = $this->request->getPost();
-            if ($this->model->insert($data)) {
+            if ($this->safeInsert($this->model, $data, 'Data jenis pengadaan sudah ada.')) {
                 $this->logAudit('jenis_pengadaan', 'create', "Jenis Pengadaan: {$data['nama']}");
                 return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil disimpan.');
             }
@@ -51,7 +51,7 @@ class JenisPengadaan extends BaseController
 
     public function update($id = null)
     {
-        if ($this->model->update($id, $this->request->getPost())) {
+        if ($this->safeUpdate($this->model, $id, $this->request->getPost(), 'Data jenis pengadaan sudah ada.')) {
             $this->logAudit('jenis_pengadaan', 'update', "Jenis Pengadaan ID: {$id}");
             return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil diperbarui.');
         }

@@ -24,7 +24,7 @@ class Skpd extends BaseController
         if ($this->request->getMethod() === 'POST') {
             $model = new \App\Models\SkpdModel();
             $data = $this->request->getPost();
-            if ($model->insert($data)) {
+            if ($this->safeInsert($model, $data, 'Data SKPD sudah ada.')) {
                 $this->logAudit('skpd', 'create', "SKPD: {$data['nama_skpd']}");
                 return redirect()->to('skpd')->with('success', 'Data SKPD berhasil disimpan.');
             }
@@ -49,7 +49,7 @@ class Skpd extends BaseController
     public function update($id = null)
     {
         $model = new \App\Models\SkpdModel();
-        if ($model->update($id, $this->request->getPost())) {
+        if ($this->safeUpdate($model, $id, $this->request->getPost(), 'Data SKPD sudah ada.')) {
             $this->logAudit('skpd', 'update', "SKPD ID: {$id}");
             return redirect()->to('skpd')->with('success', 'Data SKPD berhasil diperbarui.');
         }

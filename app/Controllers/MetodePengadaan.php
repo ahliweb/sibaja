@@ -25,7 +25,7 @@ class MetodePengadaan extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $data = $this->request->getPost();
-            if ($this->model->insert($data)) {
+            if ($this->safeInsert($this->model, $data, 'Data metode pengadaan sudah ada.')) {
                 $this->logAudit('metode_pengadaan', 'create', "Metode Pengadaan: {$data['nama']}");
                 return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil disimpan.');
             }
@@ -51,7 +51,7 @@ class MetodePengadaan extends BaseController
 
     public function update($id = null)
     {
-        if ($this->model->update($id, $this->request->getPost())) {
+        if ($this->safeUpdate($this->model, $id, $this->request->getPost(), 'Data metode pengadaan sudah ada.')) {
             $this->logAudit('metode_pengadaan', 'update', "Metode Pengadaan ID: {$id}");
             return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil diperbarui.');
         }

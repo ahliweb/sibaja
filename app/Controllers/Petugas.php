@@ -25,7 +25,7 @@ class Petugas extends BaseController
             $data['role'] = 'petugas';
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
-            if ($model->insert($data)) {
+            if ($this->safeInsert($model, $data, 'Data petugas sudah ada.')) {
                 $this->logAudit('petugas', 'create', "Petugas: {$data['nama']}");
                 return redirect()->to('petugas')->with('success', 'Data petugas berhasil disimpan.');
             }
@@ -59,7 +59,7 @@ class Petugas extends BaseController
         } else {
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
-        if ($model->update($id, $data)) {
+        if ($this->safeUpdate($model, $id, $data, 'Data petugas sudah ada.')) {
             $this->logAudit('petugas', 'update', "Petugas ID: {$id}");
             return redirect()->to('petugas')->with('success', 'Data petugas berhasil diperbarui.');
         }

@@ -92,7 +92,7 @@ class Pengajuan extends BaseController
         $data['nomor_pengajuan'] = $this->generateNomor();
         $data['tanggal'] = date('Y-m-d');
 
-        if ($this->model->insert($data)) {
+        if ($this->safeInsert($this->model, $data, 'Data pengajuan sudah ada.')) {
             $id = $this->model->getInsertID();
             // Log to riwayat
             (new RiwayatProsesModel())->insert([
@@ -132,7 +132,7 @@ class Pengajuan extends BaseController
         $data = $this->request->getPost();
         $data['status'] = $data['status'] ?? $pengajuan['status'];
 
-        if ($this->model->update($id, $data)) {
+        if ($this->safeUpdate($this->model, $id, $data, 'Data pengajuan sudah ada.')) {
             return redirect()->to("pengajuan/{$id}")->with('success', 'Pengajuan berhasil diperbarui.');
         }
         return redirect()->back()->withInput()->with('errors', $this->model->errors());

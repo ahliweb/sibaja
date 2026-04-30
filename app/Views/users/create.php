@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <div class="card card-primary">
   <div class="card-header"><h3 class="card-title"><?= $isEdit ? 'Edit' : 'Tambah' ?> User</h3></div>
-    <form action="<?= base_url($isEdit ? "users/{$data['id']}/update" : 'users') ?>" method="post">
+    <form action="<?= base_url($isEdit ? "users/update/{$data['id']}" : 'users') ?>" method="post">
     <?= csrf_field() ?>
     <div class="card-body">
       <div class="mb-3 row">

@@ -19,8 +19,8 @@
           <td><span class="badge text-bg-<?= $row['status'] === 'aktif' ? 'success' : 'secondary' ?>"><?= ucfirst($row['status']) ?></span></td>
           <td nowrap>
             <a href="<?= base_url("users/{$row['id']}") ?>" class="btn btn-sm btn-info" title="Detail"><i class="fas fa-eye"></i></a>
-            <a href="<?= base_url("users/{$row['id']}/edit") ?>" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
-            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("users/{$row['id']}/delete") ?>" data-nama="<?= esc($row['nama']) ?>" title="Nonaktifkan"><i class="fas fa-trash"></i></button>
+            <a href="<?= base_url("users/edit/{$row['id']}") ?>" class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-edit"></i></a>
+            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("users/delete/{$row['id']}") ?>" data-nama="<?= esc($row['nama']) ?>" title="Nonaktifkan"><i class="fas fa-trash"></i></button>
           </td>
         </tr>
         <?php endforeach; ?>

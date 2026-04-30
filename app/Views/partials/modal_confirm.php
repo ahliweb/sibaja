@@ -12,9 +12,12 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           <i class="fas fa-times"></i> Batal
         </button>
-        <a href="#" id="btnConfirmDelete" class="btn btn-danger">
-          <i class="fas fa-trash"></i> Hapus
-        </a>
+        <form id="formDelete" method="post" style="display:inline">
+          <?= csrf_field() ?>
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Hapus
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -25,10 +28,12 @@ $(function () {
   $('.btn-hapus').on('click', function () {
     const url = $(this).data('url');
     const nama = $(this).data('nama');
+    const tokenVal = $(this).data('token') || $('input[name="<?= csrf_token() ?>"]').val();
     $('#modalConfirm').find('.modal-body').html(
       'Apakah Anda yakin ingin menghapus <strong>' + nama + '</strong>?'
     );
-    $('#modalConfirm').find('#btnConfirmDelete').attr('href', url);
+    $('#formDelete').attr('action', url);
+    $('input[name="<?= csrf_token() ?>"]').val(tokenVal);
     $('#modalConfirm').modal('show');
   });
 });

@@ -44,7 +44,7 @@
           <td>
             <a href="<?= base_url("dokumen/{$d['id']}/download") ?>" class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
             <?php if (in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])): ?>
-            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("dokumen/{$d['id']}/delete") ?>" data-nama="<?= esc($d['nama_asli']) ?>"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("dokumen/delete/{$d['id']}") ?>" data-nama="<?= esc($d['nama_asli']) ?>"><i class="fas fa-trash"></i></button>
             <?php endif; ?>
           </td>
         </tr>

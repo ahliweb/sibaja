@@ -32,7 +32,7 @@ class Users extends BaseController
             $model = new \App\Models\UserModel();
             $data = $this->request->getPost();
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-            if ($model->insert($data)) {
+            if ($this->safeInsert($model, $data, 'Data user sudah ada.')) {
                 $this->logAudit('user', 'create', "User: {$data['nama']}");
                 return redirect()->to('users')->with('success', 'Data user berhasil disimpan.');
             }
@@ -72,7 +72,7 @@ class Users extends BaseController
         } else {
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
-        if ($model->update($id, $data)) {
+        if ($this->safeUpdate($model, $id, $data, 'Data user sudah ada.')) {
             $this->logAudit('user', 'update', "User ID: {$id}");
             return redirect()->to('users')->with('success', 'Data user berhasil diperbarui.');
         }

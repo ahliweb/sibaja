@@ -18,9 +18,9 @@ class Settings extends BaseController
             foreach ($this->request->getPost() as $key => $value) {
                 $existing = $model->where('key', $key)->first();
                 if ($existing) {
-                    $model->update($existing['id'], ['value' => $value]);
+                    $this->safeUpdate($model, $existing['id'], ['value' => $value], 'Data pengaturan sudah ada.');
                 } else {
-                    $model->insert(['key' => $key, 'value' => $value]);
+                    $this->safeInsert($model, ['key' => $key, 'value' => $value], 'Data pengaturan sudah ada.');
                 }
             }
             $this->logAudit('settings', 'update', 'Settings updated');

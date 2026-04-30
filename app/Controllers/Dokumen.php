@@ -49,7 +49,7 @@ class Dokumen extends BaseController
         $newName = $file->getRandomName();
         $file->move(WRITEPATH . 'uploads/dokumen', $newName);
 
-        $this->model->insert([
+        if ($this->safeInsert($this->model, [
             'pengajuan_id'      => $pengajuanId,
             'user_id'           => $this->currentUserId(),
             'jenis_dokumen'     => $this->request->getPost('jenis_dokumen'),
@@ -58,10 +58,11 @@ class Dokumen extends BaseController
             'ukuran'            => $file->getSize(),
             'status_verifikasi' => 'belum_diperiksa',
             'uploaded_at'       => date('Y-m-d H:i:s'),
-        ]);
-
-        $this->logAudit('dokumen', 'create', "Dokumen untuk Pengajuan ID: {$pengajuanId}");
-        return redirect()->back()->with('success', 'Dokumen berhasil diupload.');
+        ], 'Dokumen sudah ada.')) {
+            $this->logAudit('dokumen', 'create', "Dokumen untuk Pengajuan ID: {$pengajuanId}");
+            return redirect()->back()->with('success', 'Dokumen berhasil diupload.');
+        }
+        return redirect()->back()->withInput()->with('errors', $this->model->errors());
     }
 
     public function download($id = null)
@@ -111,8 +112,10 @@ class Dokumen extends BaseController
             'status_verifikasi' => $this->request->getPost('status_verifikasi'),
             'catatan'           => $this->request->getPost('catatan'),
         ];
-        $this->model->update($id, $data);
-        $this->logAudit('dokumen', 'update', "Dokumen ID: {$id}");
-        return redirect()->back()->with('success', 'Verifikasi dokumen berhasil disimpan.');
+        if ($this->safeUpdate($this->model, $id, $data, 'Dokumen sudah ada.')) {
+            $this->logAudit('dokumen', 'update', "Dokumen ID: {$id}");
+            return redirect()->back()->with('success', 'Verifikasi dokumen berhasil disimpan.');
+        }
+        return redirect()->back()->withInput()->with('errors', $this->model->errors());
     }
 }

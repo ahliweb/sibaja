@@ -25,7 +25,7 @@ class TahunAnggaran extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $data = $this->request->getPost();
-            if ($this->model->insert($data)) {
+            if ($this->safeInsert($this->model, $data, 'Tahun anggaran sudah ada.')) {
                 $this->logAudit('tahun_anggaran', 'create', "Tahun Anggaran: {$data['tahun']}");
                 return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil disimpan.');
             }
@@ -51,7 +51,7 @@ class TahunAnggaran extends BaseController
 
     public function update($id = null)
     {
-        if ($this->model->update($id, $this->request->getPost())) {
+        if ($this->safeUpdate($this->model, $id, $this->request->getPost(), 'Tahun anggaran sudah ada.')) {
             $this->logAudit('tahun_anggaran', 'update', "Tahun Anggaran ID: {$id}");
             return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil diperbarui.');
         }

@@ -17,7 +17,7 @@
           <td nowrap>
             <a href="<?= base_url("pengajuan/{$p['id']}") ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
             <?php if (in_array($p['status'], ['draft', 'perlu_perbaikan'])): ?>
-            <a href="<?= base_url("pengajuan/{$p['id']}/edit") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+            <a href="<?= base_url("pengajuan/edit/{$p['id']}") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
             <?php endif; ?>
             <?php if ($p['status'] === 'draft'): ?>
             <a href="<?= base_url("dokumen/upload/{$p['id']}") ?>" class="btn btn-sm btn-primary"><i class="fas fa-upload"></i></a>

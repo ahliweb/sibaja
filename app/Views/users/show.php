@@ -15,6 +15,6 @@
 </div>
 <div class="card-footer">
 <a href="<?= base_url('users') ?>" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
-<a href="<?= base_url("users/{$data['id']}/edit") ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
+<a href="<?= base_url("users/edit/{$data['id']}") ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
 </div></div>
 <?= $this->endSection() ?>

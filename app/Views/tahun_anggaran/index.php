@@ -11,8 +11,8 @@
         <?php $no = 1; foreach ($data as $row): ?>
         <tr><td><?= $no++ ?></td><td><?= esc($row['tahun']) ?></td>
           <td><span class="badge text-bg-<?= $row['status'] === 'aktif' ? 'success' : 'secondary' ?>"><?= ucfirst($row['status']) ?></span></td>
-          <td><a href="<?= base_url("tahun-anggaran/{$row['id']}/edit") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("tahun-anggaran/{$row['id']}/delete") ?>" data-nama="<?= esc($row['tahun']) ?>"><i class="fas fa-trash"></i></button></td>
+          <td><a href="<?= base_url("tahun-anggaran/edit/{$row['id']}") ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+            <button class="btn btn-sm btn-danger btn-hapus" data-url="<?= base_url("tahun-anggaran/delete/{$row['id']}") ?>" data-nama="<?= esc($row['tahun']) ?>"><i class="fas fa-trash"></i></button></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
