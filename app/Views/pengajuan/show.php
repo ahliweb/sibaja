@@ -92,7 +92,7 @@
       <div class="card-header"><h3 class="card-title">Aksi</h3></div>
       <div class="card-body d-grid gap-2">
         <?php if (session('role') === 'skpd' && in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])): ?>
-        <a href="<?= base_url("pengajuan/edit/{$pengajuan['id']}") ?>" class="btn btn-warning w-100"><i class="fas fa-edit"></i> Edit Pengajuan</a>
+        <a href="<?= base_url("pengajuan/{$pengajuan['id']}/edit") ?>" class="btn btn-warning w-100"><i class="fas fa-edit"></i> Edit Pengajuan</a>
         <a href="<?= base_url("dokumen/upload/{$pengajuan['id']}") ?>" class="btn btn-primary w-100"><i class="fas fa-upload"></i> Upload Dokumen</a>
         <?php endif; ?>
         <?php if (session('role') === 'skpd' && $pengajuan['status'] === 'draft'): ?>

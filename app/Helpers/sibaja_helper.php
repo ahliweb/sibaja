@@ -74,6 +74,7 @@ if (! function_exists('statusIcon')) {
 if (! function_exists('formatRupiah')) {
     function formatRupiah($angka): string
     {
+        $angka = is_string($angka) ? str_replace('.', '', $angka) : $angka;
         return 'Rp ' . number_format((float) $angka, 0, ',', '.');
     }
 }
