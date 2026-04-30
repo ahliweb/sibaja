@@ -86,6 +86,7 @@ class Pengajuan extends BaseController
     public function store()
     {
         $data = $this->request->getPost();
+        $data['pagu_anggaran'] = str_replace('.', '', $data['pagu_anggaran'] ?? '0');
         $data['skpd_id'] = $this->currentSkpdId();
         $data['user_id'] = $this->currentUserId();
         $data['status'] = $data['status'] ?? 'draft';
@@ -130,6 +131,7 @@ class Pengajuan extends BaseController
         }
 
         $data = $this->request->getPost();
+        $data['pagu_anggaran'] = str_replace('.', '', $data['pagu_anggaran'] ?? '0');
         $data['status'] = $data['status'] ?? $pengajuan['status'];
 
         try {

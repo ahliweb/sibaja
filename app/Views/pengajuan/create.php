@@ -61,5 +61,6 @@
 <?= $this->section('scripts') ?>
 <script>
 $('#pagu_anggaran').on('input',function(){var v=$(this).val().replace(/[^0-9]/g,'');$(this).val(v.replace(/\B(?=(\d{3})+(?!\d))/g,'.'))});
+$('form').on('submit',function(){$('#pagu_anggaran').val($('#pagu_anggaran').val().replace(/\./g,''));});
 </script>
 <?= $this->endSection() ?>
