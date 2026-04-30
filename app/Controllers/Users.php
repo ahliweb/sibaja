@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Controllers;
+
+class Users extends BaseController
+{
+    public function index()
+    {
+        $model = new \App\Models\UserModel();
+        $skpdModel = new \App\Models\SkpdModel();
+        $users = $model->orderBy('created_at', 'DESC')->findAll();
+        $skpdNames = [];
+        foreach ($users as &$u) {
+            if ($u['skpd_id']) {
+                $s = $skpdModel->find($u['skpd_id']);
+                $u['nama_skpd'] = $s['nama_skpd'] ?? '-';
+            } else {
+                $u['nama_skpd'] = '-';
+            }
+        }
+        return $this->render('users/index', ['title' => 'Data User', 'users' => $users]);
+    }
+
+    public function create()
+    {
+        $skpdModel = new \App\Models\SkpdModel();
+        return $this->render('users/create', [
+            'title' => 'Tambah User', 'isEdit' => false,
+            'skpdList' => $skpdModel->where('status', 'aktif')->findAll(),
+        ]);
+    }
+
+    public function store()
+    {
+        $model = new \App\Models\UserModel();
+        $data = $this->request->getPost();
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        if ($model->insert($data)) {
+            return redirect()->to('users')->with('success', 'Data user berhasil disimpan.');
+        }
+        return redirect()->back()->withInput()->with('errors', $model->errors());
+    }
+
+    public function edit($id = null)
+    {
+        $model = new \App\Models\UserModel();
+        $skpdModel = new \App\Models\SkpdModel();
+        return $this->render('users/edit', [
+            'title' => 'Edit User', 'isEdit' => true,
+            'data' => $model->find($id),
+            'skpdList' => $skpdModel->where('status', 'aktif')->findAll(),
+        ]);
+    }
+
+    public function update($id = null)
+    {
+        $model = new \App\Models\UserModel();
+        $data = $this->request->getPost();
+        if (empty($data['password'])) {
+            unset($data['password']);
+        } else {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
+        if ($model->update($id, $data)) {
+            return redirect()->to('users')->with('success', 'Data user berhasil diperbarui.');
+        }
+        return redirect()->back()->withInput()->with('errors', $model->errors());
+    }
+
+    public function show($id = null)
+    {
+        $model = new \App\Models\UserModel();
+        $skpdModel = new \App\Models\SkpdModel();
+        $user = $model->find($id);
+        if ($user && $user['skpd_id']) {
+            $s = $skpdModel->find($user['skpd_id']);
+            $user['nama_skpd'] = $s['nama_skpd'] ?? '-';
+        }
+        return $this->render('users/show', ['title' => 'Detail User', 'data' => $user]);
+    }
+
+    public function delete($id = null)
+    {
+        $model = new \App\Models\UserModel();
+        $model->update($id, ['status' => 'nonaktif']);
+        return redirect()->to('users')->with('success', 'User berhasil dinonaktifkan.');
+    }
+}

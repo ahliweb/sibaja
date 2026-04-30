@@ -1,0 +1,14 @@
+<?php
+
+define('SPARKED', true);
+
+// Path to the spark directory
+define('ROOTPATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// Load the CodeIgniter bootstrapper
+require ROOTPATH . 'vendor/codeigniter4/framework/system/bootstrap.php';
+
+// Launch the framework
+$app = Config\Services::codeigniter();
+$console = new CodeIgniter\CLI\Console($app);
+$console->run();

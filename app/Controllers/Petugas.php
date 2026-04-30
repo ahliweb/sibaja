@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\UserModel;
+use App\Models\SkpdModel;
+
+class Petugas extends BaseController
+{
+    public function index()
+    {
+        $model = new UserModel();
+        $petugas = $model->where('role', 'petugas')->orderBy('nama', 'ASC')->findAll();
+        return $this->render('petugas/index', [
+            'title'   => 'Data Petugas',
+            'petugas' => $petugas,
+        ]);
+    }
+
+    public function create()
+    {
+        return $this->render('petugas/create', ['title' => 'Tambah Petugas', 'isEdit' => false]);
+    }
+
+    public function store()
+    {
+        $model = new UserModel();
+        $data = $this->request->getPost();
+        $data['role'] = 'petugas';
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        if ($model->insert($data)) {
+            return redirect()->to('petugas')->with('success', 'Data petugas berhasil disimpan.');
+        }
+        return redirect()->back()->withInput()->with('errors', $model->errors());
+    }
+
+    public function edit($id = null)
+    {
+        $model = new UserModel();
+        return $this->render('petugas/edit', [
+            'title' => 'Edit Petugas', 'isEdit' => true,
+            'data' => $model->find($id),
+        ]);
+    }
+
+    public function update($id = null)
+    {
+        $model = new UserModel();
+        $data = $this->request->getPost();
+        if (empty($data['password'])) {
+            unset($data['password']);
+        } else {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
+        if ($model->update($id, $data)) {
+            return redirect()->to('petugas')->with('success', 'Data petugas berhasil diperbarui.');
+        }
+        return redirect()->back()->withInput()->with('errors', $model->errors());
+    }
+
+    public function delete($id = null)
+    {
+        (new UserModel())->update($id, ['status' => 'nonaktif']);
+        return redirect()->to('petugas')->with('success', 'Petugas berhasil dinonaktifkan.');
+    }
+}

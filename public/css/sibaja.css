@@ -1,0 +1,80 @@
+/* SIBAJA Custom Styles */
+
+.table-responsive-stack {
+  overflow-x: auto;
+}
+
+@media (max-width: 767.98px) {
+  .btn-action-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .small-box .inner h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.badge-status {
+  font-size: 0.85rem;
+  padding: 0.35em 0.65em;
+}
+
+.brand-image {
+  float: left;
+  line-height: .8;
+  margin-left: .2rem;
+  margin-right: .5rem;
+  margin-top: -3px;
+  max-height: 36px;
+  width: auto;
+}
+
+.user-panel {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.small-box .icon > i {
+  font-size: 70px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  opacity: 0.2;
+}
+
+.login-page {
+  background: #f4f6f9;
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+}
+
+pre.audit-detail {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
