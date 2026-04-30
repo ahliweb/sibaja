@@ -1,8 +1,9 @@
 <?php
 
-use CodeIgniter\Config\DotEnv;
+declare(strict_types=1);
 
-// Load .env
-(new DotEnv(ROOTPATH))->load();
+require __DIR__ . '/app/Config/Paths.php';
+$paths = new Config\Paths();
 
-defined('CI_DEBUG') || define('CI_DEBUG', ENVIRONMENT !== 'production');
+require $paths->systemDirectory . '/Boot.php';
+\CodeIgniter\Boot::preload($paths);

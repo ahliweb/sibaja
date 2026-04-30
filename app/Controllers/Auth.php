@@ -102,7 +102,6 @@ class Auth extends BaseController
                 'deskripsi'  => $deskripsi,
                 'ip_address' => $this->request->getIPAddress(),
                 'user_agent' => $this->request->getUserAgent()->getAgentString(),
-                'created_at' => date('Y-m-d H:i:s'),
             ]);
         } catch (\Exception $e) {
             // silent fail

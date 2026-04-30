@@ -1,14 +1,27 @@
 <?php
 
-define('SPARKED', true);
+use CodeIgniter\Boot;
+use Config\Paths;
 
-// Path to the spark directory
-define('ROOTPATH', __DIR__ . DIRECTORY_SEPARATOR);
+if (str_starts_with(PHP_SAPI, 'cgi')) {
+    exit("The cli tool requires php-cli to function!\n\n");
+}
 
-// Load the CodeIgniter bootstrapper
-require ROOTPATH . 'vendor/codeigniter4/framework/system/bootstrap.php';
+$minPhpVersion = '8.1';
+if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
+    exit(sprintf('Your PHP version must be %s or higher to run CodeIgniter. Current version: %s', $minPhpVersion, PHP_VERSION));
+}
 
-// Launch the framework
-$app = Config\Services::codeigniter();
-$console = new CodeIgniter\CLI\Console($app);
-$console->run();
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
+chdir(FCPATH);
+
+require FCPATH . '../app/Config/Paths.php';
+
+$paths = new Paths();
+
+require $paths->systemDirectory . '/Boot.php';
+
+exit(Boot::bootSpark($paths));
