@@ -51,11 +51,16 @@ class TahunAnggaran extends BaseController
 
     public function update($id = null)
     {
-        if ($this->safeUpdate($this->model, $id, $this->request->getPost(), 'Tahun anggaran sudah ada.')) {
-            $this->logAudit('tahun_anggaran', 'update', "Tahun Anggaran ID: {$id}");
-            return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil diperbarui.');
+        try {
+            $this->model->skipValidation(true)->update($id, $this->request->getPost());
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return redirect()->back()->withInput()->with('error', 'Tahun anggaran sudah ada.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan database.');
         }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        $this->logAudit('tahun_anggaran', 'update', "Tahun Anggaran ID: {$id}");
+        return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function new()

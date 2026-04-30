@@ -49,11 +49,16 @@ class Skpd extends BaseController
     public function update($id = null)
     {
         $model = new \App\Models\SkpdModel();
-        if ($this->safeUpdate($model, $id, $this->request->getPost(), 'Data SKPD sudah ada.')) {
-            $this->logAudit('skpd', 'update', "SKPD ID: {$id}");
-            return redirect()->to('skpd')->with('success', 'Data SKPD berhasil diperbarui.');
+        try {
+            $model->skipValidation(true)->update($id, $this->request->getPost());
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return redirect()->back()->withInput()->with('error', 'Data SKPD sudah ada.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan database.');
         }
-        return redirect()->back()->withInput()->with('errors', $model->errors());
+        $this->logAudit('skpd', 'update', "SKPD ID: {$id}");
+        return redirect()->to('skpd')->with('success', 'Data SKPD berhasil diperbarui.');
     }
 
     public function show($id = null)

@@ -53,17 +53,22 @@ class Petugas extends BaseController
     public function update($id = null)
     {
         $model = new UserModel();
-        $data = $this->request->getPost();
-        if (empty($data['password'])) {
-            unset($data['password']);
-        } else {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        try {
+            $data = $this->request->getPost();
+            if (empty($data['password'])) {
+                unset($data['password']);
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            $model->skipValidation(true)->update($id, $data);
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return redirect()->back()->withInput()->with('error', 'Username sudah digunakan.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan database.');
         }
-        if ($this->safeUpdate($model, $id, $data, 'Data petugas sudah ada.')) {
-            $this->logAudit('petugas', 'update', "Petugas ID: {$id}");
-            return redirect()->to('petugas')->with('success', 'Data petugas berhasil diperbarui.');
-        }
-        return redirect()->back()->withInput()->with('errors', $model->errors());
+        $this->logAudit('petugas', 'update', "Petugas ID: {$id}");
+        return redirect()->to('petugas')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function new()

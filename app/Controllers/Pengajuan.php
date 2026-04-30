@@ -132,10 +132,17 @@ class Pengajuan extends BaseController
         $data = $this->request->getPost();
         $data['status'] = $data['status'] ?? $pengajuan['status'];
 
-        if ($this->safeUpdate($this->model, $id, $data, 'Data pengajuan sudah ada.')) {
-            return redirect()->to("pengajuan/{$id}")->with('success', 'Pengajuan berhasil diperbarui.');
+        try {
+            $this->model->skipValidation(true)->update($id, $data);
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return redirect()->back()->withInput()->with('error', 'Data pengajuan sudah ada.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan database.');
         }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+
+        $this->logAudit('pengajuan', 'update', "Pengajuan ID: {$id}");
+        return redirect()->to("pengajuan/{$id}")->with('success', 'Pengajuan berhasil diperbarui.');
     }
 
     // === Kirim ===

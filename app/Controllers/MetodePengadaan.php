@@ -51,11 +51,16 @@ class MetodePengadaan extends BaseController
 
     public function update($id = null)
     {
-        if ($this->safeUpdate($this->model, $id, $this->request->getPost(), 'Data metode pengadaan sudah ada.')) {
-            $this->logAudit('metode_pengadaan', 'update', "Metode Pengadaan ID: {$id}");
-            return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil diperbarui.');
+        try {
+            $this->model->skipValidation(true)->update($id, $this->request->getPost());
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return redirect()->back()->withInput()->with('error', 'Data metode pengadaan sudah ada.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan database.');
         }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        $this->logAudit('metode_pengadaan', 'update', "Metode Pengadaan ID: {$id}");
+        return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function new()

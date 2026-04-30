@@ -17,7 +17,7 @@ class SkpdModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'kode_skpd' => 'required|max_length[20]|is_unique[skpd.kode_skpd]',
+        'kode_skpd' => 'required|max_length[20]|is_unique[skpd.kode_skpd,id,{id}]',
         'nama_skpd' => 'required|max_length[200]',
     ];
 

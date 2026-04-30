@@ -18,8 +18,8 @@ class UserModel extends Model
 
     protected $validationRules = [
         'nama'     => 'required|min_length[3]|max_length[200]',
-        'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username]',
-        'password' => 'required|min_length[8]',
+        'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username,id,{id}]',
+        'password' => 'permit_empty|min_length[8]',
         'role'     => 'required|in_list[admin,petugas,skpd]',
         'email'    => 'permit_empty|valid_email|max_length[100]',
         'status'   => 'permit_empty|in_list[aktif,nonaktif]',
