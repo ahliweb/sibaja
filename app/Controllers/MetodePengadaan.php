@@ -55,6 +55,18 @@ class MetodePengadaan extends BaseController
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
     }
 
+    public function new()
+    {
+        return $this->create();
+    }
+
+    public function show($id = null)
+    {
+        $data = $this->model->find($id);
+        if (! $data) return redirect()->to('metode-pengadaan')->with('error', 'Data tidak ditemukan.');
+        return $this->render('metode_pengadaan/show', ['title' => 'Detail Metode Pengadaan', 'data' => $data]);
+    }
+
     public function delete($id = null)
     {
         $this->model->update($id, ['status' => 'nonaktif']);

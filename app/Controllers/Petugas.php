@@ -63,10 +63,26 @@ class Petugas extends BaseController
         return redirect()->back()->withInput()->with('errors', $model->errors());
     }
 
+    public function new()
+    {
+        return $this->create();
+    }
+
+    public function show($id = null)
+    {
+        $model = new UserModel();
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('petugas')->with('error', 'Data tidak ditemukan.');
+        return $this->render('petugas/show', ['title' => 'Detail Petugas', 'data' => $data]);
+    }
+
     public function delete($id = null)
     {
-        (new UserModel())->update($id, ['status' => 'nonaktif']);
-        $this->logAudit('petugas', 'delete', "Petugas ID: {$id}");
+        $model = new UserModel();
+        $data = $model->find($id);
+        if (! $data) return redirect()->to('petugas')->with('error', 'Data tidak ditemukan.');
+        $model->update($id, ['status' => 'nonaktif']);
+        $this->logAudit('petugas', 'delete', "Petugas: {$data['nama']}");
         return redirect()->to('petugas')->with('success', 'Petugas berhasil dinonaktifkan.');
     }
 }

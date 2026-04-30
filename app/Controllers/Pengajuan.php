@@ -22,47 +22,47 @@ class Pengajuan extends BaseController
     // === Admin/Petugas: All submissions ===
     public function index()
     {
-        $pengajuan = $this->model->orderBy('created_at', 'DESC')->findAll();
+        $result = $this->model->getWithRelations();
         return $this->render('pengajuan/index', [
             'title'      => 'Semua Pengajuan',
-            'pengajuan'  => $pengajuan,
-            'skpdList'   => (new SkpdModel())->where('status', 'aktif')->findAll(),
-            'jenisList'  => (new JenisPengadaanModel())->where('status', 'aktif')->findAll(),
-            'metodeList' => (new MetodePengadaanModel())->where('status', 'aktif')->findAll(),
-            'tahunList'  => (new TahunAnggaranModel())->orderBy('tahun', 'DESC')->findAll(),
-        ]);
+            'pengajuan'  => $result,
+        ] + $this->listData());
     }
 
     public function masuk()
     {
-        $pengajuan = $this->model->where('status', 'diajukan')->orderBy('created_at', 'ASC')->findAll();
-        return $this->render('pengajuan/index', array_merge($this->listData(), [
-            'title' => 'Pengajuan Masuk', 'pengajuan' => $pengajuan,
-        ]));
+        $this->model->where('pengajuan.status', 'diajukan')->orderBy('pengajuan.created_at', 'ASC');
+        $result = $this->model->getWithRelations();
+        return $this->render('pengajuan/index', [
+            'title' => 'Pengajuan Masuk', 'pengajuan' => $result,
+        ] + $this->listData());
     }
 
     public function diproses()
     {
-        $pengajuan = $this->model->whereIn('status', ['diverifikasi', 'dalam_proses'])->orderBy('created_at', 'DESC')->findAll();
-        return $this->render('pengajuan/index', array_merge($this->listData(), [
-            'title' => 'Pengajuan Diproses', 'pengajuan' => $pengajuan,
-        ]));
+        $this->model->whereIn('pengajuan.status', ['diverifikasi', 'dalam_proses'])->orderBy('pengajuan.created_at', 'DESC');
+        $result = $this->model->getWithRelations();
+        return $this->render('pengajuan/index', [
+            'title' => 'Pengajuan Diproses', 'pengajuan' => $result,
+        ] + $this->listData());
     }
 
     public function selesai()
     {
-        $pengajuan = $this->model->where('status', 'selesai')->orderBy('updated_at', 'DESC')->findAll();
-        return $this->render('pengajuan/index', array_merge($this->listData(), [
-            'title' => 'Pengajuan Selesai', 'pengajuan' => $pengajuan,
-        ]));
+        $this->model->where('pengajuan.status', 'selesai')->orderBy('pengajuan.updated_at', 'DESC');
+        $result = $this->model->getWithRelations();
+        return $this->render('pengajuan/index', [
+            'title' => 'Pengajuan Selesai', 'pengajuan' => $result,
+        ] + $this->listData());
     }
 
     public function ditolak()
     {
-        $pengajuan = $this->model->where('status', 'ditolak')->orderBy('updated_at', 'DESC')->findAll();
-        return $this->render('pengajuan/index', array_merge($this->listData(), [
-            'title' => 'Pengajuan Ditolak', 'pengajuan' => $pengajuan,
-        ]));
+        $this->model->where('pengajuan.status', 'ditolak')->orderBy('pengajuan.updated_at', 'DESC');
+        $result = $this->model->getWithRelations();
+        return $this->render('pengajuan/index', [
+            'title' => 'Pengajuan Ditolak', 'pengajuan' => $result,
+        ] + $this->listData());
     }
 
     // === User SKPD: My submissions ===
@@ -79,7 +79,7 @@ class Pengajuan extends BaseController
     public function create()
     {
         return $this->render('pengajuan/create', array_merge($this->listData(), [
-            'title' => 'Tambah Pengajuan', 'isEdit' => false,
+            'title' => 'Tambah Pengajuan', 'isEdit' => false, 'data' => [],
         ]));
     }
 
@@ -124,6 +124,7 @@ class Pengajuan extends BaseController
     public function update($id = null)
     {
         $pengajuan = $this->model->find($id);
+        if (! $pengajuan) return redirect()->back()->with('error', 'Pengajuan tidak ditemukan.');
         if (! in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])) {
             return redirect()->to("pengajuan/{$id}")->with('error', 'Pengajuan tidak dapat diedit.');
         }

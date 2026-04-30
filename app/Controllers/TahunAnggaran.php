@@ -55,6 +55,18 @@ class TahunAnggaran extends BaseController
         return redirect()->back()->withInput()->with('errors', $this->model->errors());
     }
 
+    public function new()
+    {
+        return $this->create();
+    }
+
+    public function show($id = null)
+    {
+        $data = $this->model->find($id);
+        if (! $data) return redirect()->to('tahun-anggaran')->with('error', 'Data tidak ditemukan.');
+        return $this->render('tahun_anggaran/show', ['title' => 'Detail Tahun Anggaran', 'data' => $data]);
+    }
+
     public function delete($id = null)
     {
         $this->model->update($id, ['status' => 'nonaktif']);

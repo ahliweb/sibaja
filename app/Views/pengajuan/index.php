@@ -24,7 +24,7 @@
           <?php $no = 1; foreach ($pengajuan as $p): ?>
           <tr>
             <td><?= $no++ ?></td><td><?= esc($p['nomor_pengajuan'] ?? '-') ?></td><td><?= date('d/m/Y', strtotime($p['tanggal'] ?? '')) ?></td>
-            <td><?= esc($p['skpd_id']) ?></td><td><?= esc($p['nama_paket']) ?></td><td><?= esc($p['jenis_id']) ?></td>
+            <td><?= esc($p['nama_skpd'] ?? $p['skpd_id'] ?? '-') ?></td><td><?= esc($p['nama_paket']) ?></td><td><?= esc($p['jenis_nama'] ?? $p['jenis_id'] ?? '-') ?></td>
             <td><?= formatRupiah($p['pagu_anggaran'] ?? 0) ?></td>
             <td><span class="badge text-bg-<?= statusClass($p['status']) ?>"><?= statusLabel($p['status']) ?></span></td>
             <td nowrap>
