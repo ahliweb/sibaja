@@ -29,7 +29,7 @@
             <td><span class="badge text-bg-<?= statusClass($p['status']) ?>"><?= statusLabel($p['status']) ?></span></td>
             <td nowrap>
               <a href="<?= base_url("pengajuan/{$p['id']}") ?>" class="btn btn-sm btn-info" title="Detail"><i class="fas fa-eye"></i></a>
-              <?php if ($this->isAdmin() || $this->isPetugas()): ?>
+              <?php if (in_array(session('role'), ['admin', 'petugas'])): ?>
               <a href="<?= base_url("pengajuan/{$p['id']}/update-status") ?>" class="btn btn-sm btn-warning" title="Ubah Status"><i class="fas fa-edit"></i></a>
               <?php endif; ?>
             </td>

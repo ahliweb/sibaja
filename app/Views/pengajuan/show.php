@@ -91,18 +91,18 @@
     <div class="card">
       <div class="card-header"><h3 class="card-title">Aksi</h3></div>
       <div class="card-body d-grid gap-2">
-        <?php if ($this->isSkpd() && in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])): ?>
+        <?php if (session('role') === 'skpd' && in_array($pengajuan['status'], ['draft', 'perlu_perbaikan'])): ?>
         <a href="<?= base_url("pengajuan/edit/{$pengajuan['id']}") ?>" class="btn btn-warning w-100"><i class="fas fa-edit"></i> Edit Pengajuan</a>
         <a href="<?= base_url("dokumen/upload/{$pengajuan['id']}") ?>" class="btn btn-primary w-100"><i class="fas fa-upload"></i> Upload Dokumen</a>
         <?php endif; ?>
-        <?php if ($this->isSkpd() && $pengajuan['status'] === 'draft'): ?>
+        <?php if (session('role') === 'skpd' && $pengajuan['status'] === 'draft'): ?>
         <a href="<?= base_url("pengajuan/{$pengajuan['id']}/kirim") ?>" class="btn btn-success w-100" onclick="return confirm('Kirim pengajuan ini?')"><i class="fas fa-paper-plane"></i> Kirim Pengajuan</a>
         <?php endif; ?>
-        <?php if ($this->isAdmin() || $this->isPetugas()): ?>
+        <?php if (in_array(session('role'), ['admin', 'petugas'])): ?>
         <a href="<?= base_url("dokumen/upload/{$pengajuan['id']}") ?>" class="btn btn-primary w-100"><i class="fas fa-upload"></i> Upload Dokumen</a>
         <a href="<?= base_url("pengajuan/{$pengajuan['id']}/update-status") ?>" class="btn btn-warning w-100"><i class="fas fa-edit"></i> Ubah Status</a>
         <?php endif; ?>
-        <a href="<?= base_url($this->isSkpd() ? 'pengajuan/my' : 'pengajuan') ?>" class="btn btn-secondary w-100"><i class="fas fa-arrow-left"></i> Kembali</a>
+        <a href="<?= base_url(session('role') === 'skpd' ? 'pengajuan/my' : 'pengajuan') ?>" class="btn btn-secondary w-100"><i class="fas fa-arrow-left"></i> Kembali</a>
       </div>
     </div>
   </div>
