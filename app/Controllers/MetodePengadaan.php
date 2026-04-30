@@ -23,17 +23,20 @@ class MetodePengadaan extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $data = $this->request->getPost();
+            if ($this->model->insert($data)) {
+                $this->logAudit('metode_pengadaan', 'create', "Metode Pengadaan: {$data['nama']}");
+                return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        }
         return $this->render('metode_pengadaan/create', ['title' => 'Tambah Metode Pengadaan', 'isEdit' => false]);
     }
 
     public function store()
     {
-        $data = $this->request->getPost();
-        if ($this->model->insert($data)) {
-            $this->logAudit('metode_pengadaan', 'create', "Metode Pengadaan: {$data['nama']}");
-            return redirect()->to('metode-pengadaan')->with('success', 'Data berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)

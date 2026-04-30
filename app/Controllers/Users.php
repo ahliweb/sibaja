@@ -28,6 +28,16 @@ class Users extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $model = new \App\Models\UserModel();
+            $data = $this->request->getPost();
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            if ($model->insert($data)) {
+                $this->logAudit('user', 'create', "User: {$data['nama']}");
+                return redirect()->to('users')->with('success', 'Data user berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
         $skpdModel = new \App\Models\SkpdModel();
         return $this->render('users/create', [
             'title' => 'Tambah User', 'isEdit' => false,
@@ -37,14 +47,7 @@ class Users extends BaseController
 
     public function store()
     {
-        $model = new \App\Models\UserModel();
-        $data = $this->request->getPost();
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        if ($model->insert($data)) {
-            $this->logAudit('user', 'create', "User: {$data['nama']}");
-            return redirect()->to('users')->with('success', 'Data user berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)

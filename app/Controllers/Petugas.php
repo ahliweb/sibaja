@@ -19,21 +19,24 @@ class Petugas extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $model = new UserModel();
+            $data = $this->request->getPost();
+            $data['role'] = 'petugas';
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+            if ($model->insert($data)) {
+                $this->logAudit('petugas', 'create', "Petugas: {$data['nama']}");
+                return redirect()->to('petugas')->with('success', 'Data petugas berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
         return $this->render('petugas/create', ['title' => 'Tambah Petugas', 'isEdit' => false]);
     }
 
     public function store()
     {
-        $model = new UserModel();
-        $data = $this->request->getPost();
-        $data['role'] = 'petugas';
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
-        if ($model->insert($data)) {
-            $this->logAudit('petugas', 'create', "Petugas: {$data['nama']}");
-            return redirect()->to('petugas')->with('success', 'Data petugas berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)

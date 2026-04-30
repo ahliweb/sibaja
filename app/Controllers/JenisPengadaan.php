@@ -23,17 +23,20 @@ class JenisPengadaan extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $data = $this->request->getPost();
+            if ($this->model->insert($data)) {
+                $this->logAudit('jenis_pengadaan', 'create', "Jenis Pengadaan: {$data['nama']}");
+                return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        }
         return $this->render('jenis_pengadaan/create', ['title' => 'Tambah Jenis Pengadaan', 'isEdit' => false]);
     }
 
     public function store()
     {
-        $data = $this->request->getPost();
-        if ($this->model->insert($data)) {
-            $this->logAudit('jenis_pengadaan', 'create', "Jenis Pengadaan: {$data['nama']}");
-            return redirect()->to('jenis-pengadaan')->with('success', 'Data berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)

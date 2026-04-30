@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 <div class="card card-primary">
   <div class="card-header"><h3 class="card-title"><?= $isEdit ? 'Edit' : 'Tambah' ?> <?= $title ?></h3></div>
-  <form action="<?= base_url($isEdit ? "jenis-pengadaan/{$data['id']}/update" : 'jenis-pengadaan/store') ?>" method="post">
+  <form action="<?= base_url($isEdit ? "jenis-pengadaan/{$data['id']}/update" : 'jenis-pengadaan') ?>" method="post">
     <?= csrf_field() ?>
     <div class="card-body">
       <div class="mb-3"><label>Nama <span class="text-danger">*</span></label><input type="text" name="nama" class="form-control" value="<?= old('nama', $data['nama'] ?? '') ?>" required></div>

@@ -21,18 +21,21 @@ class Skpd extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $model = new \App\Models\SkpdModel();
+            $data = $this->request->getPost();
+            if ($model->insert($data)) {
+                $this->logAudit('skpd', 'create', "SKPD: {$data['nama_skpd']}");
+                return redirect()->to('skpd')->with('success', 'Data SKPD berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $model->errors());
+        }
         return $this->render('skpd/create', ['title' => 'Tambah SKPD', 'isEdit' => false]);
     }
 
     public function store()
     {
-        $model = new \App\Models\SkpdModel();
-        $data = $this->request->getPost();
-        if ($model->insert($data)) {
-            $this->logAudit('skpd', 'create', "SKPD: {$data['nama_skpd']}");
-            return redirect()->to('skpd')->with('success', 'Data SKPD berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)

@@ -23,17 +23,20 @@ class TahunAnggaran extends BaseController
 
     public function create()
     {
+        if ($this->request->getMethod() === 'post') {
+            $data = $this->request->getPost();
+            if ($this->model->insert($data)) {
+                $this->logAudit('tahun_anggaran', 'create', "Tahun Anggaran: {$data['tahun']}");
+                return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil disimpan.');
+            }
+            return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        }
         return $this->render('tahun_anggaran/create', ['title' => 'Tambah Tahun Anggaran', 'isEdit' => false]);
     }
 
     public function store()
     {
-        $data = $this->request->getPost();
-        if ($this->model->insert($data)) {
-            $this->logAudit('tahun_anggaran', 'create', "Tahun Anggaran: {$data['tahun']}");
-            return redirect()->to('tahun-anggaran')->with('success', 'Data berhasil disimpan.');
-        }
-        return redirect()->back()->withInput()->with('errors', $this->model->errors());
+        return $this->create();
     }
 
     public function edit($id = null)
